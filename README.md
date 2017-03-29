@@ -21,7 +21,7 @@ Then the scraper will search the given campsite for the date with the length of 
 Or, you can set up the script to run under cron, and notify you on macOS using the provided [`cron.sh`](./cron.sh) script. An example is:
 
 ```cron
-0/15 * * * * CAMPGROUND="https://www.reserveamerica.com/camping/big-basin-redwoods-sp/r/campgroundDetails.do?contractCode=CA&parkId=120009" LENGTH=2 DATE="04/14/2017" /Users/streeter/reserve-america-scraper/cron.sh 2>&1 > /dev/null
+*/15 * * * * CAMPGROUND="https://www.reserveamerica.com/camping/big-basin-redwoods-sp/r/campgroundDetails.do?contractCode=CA&parkId=120009" LENGTH=2 DATE="04/14/2017" ~/reserve-america-scraper/cron.sh 2>&1 > /dev/null
 ```
 
 Note that the `cron.sh` expects you to have a Python virtual env defined at `~/.virtualenvs/reserve-america`. So you might need to change the value of the `VENV_BASE` variable in the script.
