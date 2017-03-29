@@ -1,5 +1,6 @@
 #!/bin/bash
 
+PATH="/usr/local/bin:${PATH}"
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 VENV_BASE="$HOME/.virtualenvs/reserve-america"
 
