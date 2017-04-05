@@ -2,7 +2,7 @@
 
 PATH="/usr/local/bin:${PATH}"
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-VENV_BASE="$HOME/.virtualenvs/reserve-america"
+VENV_BASE="$HOME/.virtualenvs/reserve-america-scraper"
 
 TERMINAL_NOTIFIER=`which terminal-notifier`
 NOTIF_ARGS="-sender com.google.Chrome -open $CAMPGROUND"
