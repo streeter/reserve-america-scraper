@@ -1,13 +1,14 @@
 #!/bin/bash
 
+[ -z "$RESERVE_AMERICA_VENV_BASE" ] && echo "Need to set RESERVE_AMERICA_VENV_BASE" && exit 1;
+
 PATH="/usr/local/bin:${PATH}"
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-VENV_BASE="$HOME/.virtualenvs/reserve-america-scraper"
 
 TERMINAL_NOTIFIER=`which terminal-notifier`
 NOTIF_ARGS="-sender com.google.Chrome -open $CAMPGROUND"
 
-sites=`source $VENV_BASE/bin/activate && $BASE_DIR/scraper.py`
+sites=`source $RESERVE_AMERICA_VENV_BASE/bin/activate && $BASE_DIR/scraper.py`
 
 if [ -z "$sites" ] ; then
     if [ -e $TERMINAL_NOTIFIER ]; then
