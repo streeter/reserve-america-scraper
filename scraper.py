@@ -10,7 +10,11 @@ date = os.environ['DATE']
 length_of_stay = os.environ['LENGTH']
 url = os.environ['CAMPGROUND']
 
-USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.33 Safari/537.36'
+USER_AGENT = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) '
+              'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.33 '
+              'Safari/537.36')
+
+hits = []
 
 # Create browser
 br = mechanize.Browser()
@@ -26,7 +30,7 @@ br.open(url)
 
 # Fill out form
 br.select_form(nr=0)
-br.form.set_all_readonly(False) # allow changing the .value of all controls
+br.form.set_all_readonly(False)  # allow changing the .value of all controls
 br.form["campingDate"] = date
 br.form["lengthOfStay"] = length_of_stay
 response = br.submit()
@@ -34,17 +38,18 @@ response = br.submit()
 # Scrape result
 soup = BeautifulSoup(response, "html.parser")
 table = soup.findAll("table", {"id": "shoppingitems"})
-rows = table[0].findAll("tr", {"class": "br"})
-hits = []
 
-for row in rows:
-    cells = row.findAll("td")
-    l = len(cells)
-    label = cells[0].findAll("div", {"class": "siteListLabel"})[0].text
-    is_ada = len(cells[3].findAll("img", {"title": "Accessible"})) > 0
-    status = cells[l - 1].text
-    if not is_ada and status.startswith('available'):
-        hits.append(label)
+if table:
+    rows = table[0].findAll("tr", {"class": "br"})
 
-if len(hits) > 0:
+    for row in rows:
+        cells = row.findAll("td")
+        l = len(cells)
+        label = cells[0].findAll("div", {"class": "siteListLabel"})[0].text
+        is_ada = bool(cells[3].findAll("img", {"title": "Accessible"}))
+        status = cells[l - 1].text
+        if not is_ada and status.startswith('available'):
+            hits.append(label)
+
+if hits:
     print "On {}, found available sites: {}".format(date, ', '.join(hits))
