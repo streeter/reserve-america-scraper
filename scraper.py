@@ -47,8 +47,9 @@ if table:
         l = len(cells)
         label = cells[0].findAll("div", {"class": "siteListLabel"})[0].text
         is_ada = bool(cells[3].findAll("img", {"title": "Accessible"}))
+        is_group = bool('GROUP' in cells[2].text)
         status = cells[l - 1].text
-        if not is_ada and status.startswith('available'):
+        if not is_group and not is_ada and status.startswith('available'):
             hits.append(label)
 
 if hits:
