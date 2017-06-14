@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 
 import os
+import sys
 
-import mechanize
-from bs4 import BeautifulSoup
+try:
+    import mechanize
+    from bs4 import BeautifulSoup
+except ImportError:
+    print('Unable to import necessary packages!')
+    sys.exit(-1)
 
 # Configuration
 date = os.environ['DATE']

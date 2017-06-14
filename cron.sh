@@ -1,6 +1,11 @@
 #!/bin/bash
 
-[ -z "$RESERVE_AMERICA_VENV_BASE" ] && echo "Need to set RESERVE_AMERICA_VENV_BASE" && exit 1;
+# Check for an interactive shell
+if [ -z "$PS1" ]; then
+    INTERACTIVE=0
+else
+    INTERACTIVE=1
+fi
 
 PATH="/usr/local/bin:${PATH}"
 BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -8,7 +13,12 @@ BASE_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 TERMINAL_NOTIFIER=`which terminal-notifier`
 NOTIF_ARGS="-sender com.google.Chrome -open $CAMPGROUND"
 
-sites=`source $RESERVE_AMERICA_VENV_BASE/bin/activate && $BASE_DIR/scraper.py`
+if [ -z "$RESERVE_AMERICA_VENV_BASE" ]; then
+    [ "${INTERACTIVE}" -eq "1" ] && echo "Not running in a virtualenv, this is not recommended! Set up your virtualenv use it by setting RESERVE_AMERICA_VENV_BASE"
+    sites=`$BASE_DIR/scraper.py`
+else
+    sites=`source $RESERVE_AMERICA_VENV_BASE/bin/activate && $BASE_DIR/scraper.py`
+fi
 
 if [ -z "$sites" ] ; then
     if [ -e $TERMINAL_NOTIFIER ]; then
