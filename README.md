@@ -34,6 +34,20 @@ Also, make sure that you have `terminal-notifier` installed. That's easy to do w
 > brew install terminal-notifier
 ```
 
+Twilio
+------
+When a reservation is found, you can use Twilio to send you an SMS. Just export the following env vars:
+```sh
+# Your Account SID from twilio.com/console
+export TWILIO_ACCOUNT_SID="ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+# Your Auth Token from twilio.com/console
+export TWILIO_AUTH_TOKEN="your_auth_token"
+# Your twilio phone number
+export TWILIO_FROM_NUMBER="your_twilio_phone_number"
+# Your personal phone number
+export TWILIO_TO_NUMBER="your_personal_phone_number"
+```
+
 License
 -------
 
