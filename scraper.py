@@ -11,32 +11,57 @@ except ImportError:
     print('Unable to import necessary packages!')
     sys.exit(-1)
 
+# Try to import Twilio
+try:
+    from twilio.rest import Client as TwilioClient
+except ImportError:
+    TwilioClient = None
+
 # Configuration
 date = os.environ['DATE']
 length_of_stay = os.environ['LENGTH']
 url = os.environ['CAMPGROUND']
+
 # Optional Twilio configuration
 twilio_account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
 twilio_auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
 twilio_from_number = os.environ.get('TWILIO_FROM_NUMBER')
 twilio_to_number = os.environ.get('TWILIO_TO_NUMBER')
-has_twilio = twilio_account_sid and twilio_auth_token and twilio_from_number and twilio_to_number
+has_twilio_config = all([
+    twilio_account_sid,
+    twilio_auth_token,
+    twilio_from_number,
+    twilio_to_number,
+])
+
+if TwilioClient is None and has_twilio_config:
+    print('The Twilio client is required to support SMS messages')
+elif TwilioClient is not None and not has_twilio_config:
+    print('Configure the TWILIO_* environment variables to send SMS messages')
+
+has_twilio = all([TwilioClient, has_twilio_config])
+
 
 USER_AGENT = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) '
               'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.33 '
               'Safari/537.36')
 
 def send_sms(message):
+    if not has_twilio:
+        return
+
+    msg = "{}. {}".format(message, url)
+
     client = Client(twilio_account_sid, twilio_auth_token)
     message = client.messages.create(
         to=twilio_to_number,
         from_=twilio_from_number,
-        body=message)
+        body=msg)
 
-def onHit(date, hits):
-    message = "On {}, found available sites: {}".format(date, ', '.join(hits))
+def send_results(result_date, hits):
+    message = "On {}, found available sites: {}".format(
+        result_date, ', '.join(hits))
     if has_twilio:
-        message = "{}. {}".format(message, url)
         send_sms(message)
     else:
         print message
@@ -81,6 +106,6 @@ def run():
                 hits.append(label)
 
     if hits:
-        onHit(date, hits)
+        send_results(date, hits)
 
 run()
