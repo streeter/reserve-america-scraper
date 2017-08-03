@@ -27,20 +27,13 @@ twilio_account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
 twilio_auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
 twilio_from_number = os.environ.get('TWILIO_FROM_NUMBER')
 twilio_to_number = os.environ.get('TWILIO_TO_NUMBER')
-has_twilio_config = all([
+has_twilio = all([
+    TwilioClient,
     twilio_account_sid,
     twilio_auth_token,
     twilio_from_number,
     twilio_to_number,
 ])
-
-if TwilioClient is None and has_twilio_config:
-    print('The Twilio client is required to support SMS messages')
-elif TwilioClient is not None and not has_twilio_config:
-    print('Configure the TWILIO_* environment variables to send SMS messages')
-
-has_twilio = all([TwilioClient, has_twilio_config])
-
 
 USER_AGENT = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) '
               'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.33 '
