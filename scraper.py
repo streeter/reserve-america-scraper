@@ -46,6 +46,7 @@ USER_AGENT = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) '
               'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.33 '
               'Safari/537.36')
 
+
 def send_sms(message):
     if not has_twilio:
         return
@@ -58,6 +59,7 @@ def send_sms(message):
         from_=twilio_from_number,
         body=msg)
 
+
 def send_results(result_date, hits):
     message = "On {}, found available sites: {}".format(
         result_date, ', '.join(hits))
@@ -65,6 +67,7 @@ def send_results(result_date, hits):
         send_sms(message)
     else:
         print message
+
 
 def run():
     hits = []
@@ -108,4 +111,6 @@ def run():
     if hits:
         send_results(date, hits)
 
-run()
+
+if __name__ == '__main__':
+    run()
