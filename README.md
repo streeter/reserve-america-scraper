@@ -1,10 +1,10 @@
-Scrape Reserve America
-======================
+# Scrape Reserve America
 
 Scrape Reserve America for your favorite campsite
 
-Usage
------
+Note: this repository probably doesn't work any more. See [streeter/recreation-gov-campsite-checker](https://github.com/streeter/recreation-gov-campsite-checker) for a working checker.
+
+## Usage
 
 Run the script with a few environment variables like so:
 
@@ -34,9 +34,10 @@ Also, make sure that you have `terminal-notifier` installed. That's easy to do w
 > brew install terminal-notifier
 ```
 
-Twilio
-------
+## Twilio
+
 When a reservation is found, you can use Twilio to send you an SMS. Just export the following env vars:
+
 ```sh
 # Your Account SID from twilio.com/console
 export TWILIO_ACCOUNT_SID="ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
@@ -48,7 +49,6 @@ export TWILIO_FROM_NUMBER="your_twilio_phone_number"
 export TWILIO_TO_NUMBER="your_personal_phone_number"
 ```
 
-License
--------
+## License
 
 [MIT](./LICENSE)
